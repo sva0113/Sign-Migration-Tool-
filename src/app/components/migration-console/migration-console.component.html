@@ -1,0 +1,50 @@
+/************************************************************************
+*
+* ADOBE CONFIDENTIAL
+* ___________________
+*
+* Copyright 2023 Adobe
+* All Rights Reserved.
+*
+* NOTICE: All information contained herein is, and remains
+* the property of Adobe and its suppliers, if any. The intellectual
+* and technical concepts contained herein are proprietary to Adobe
+* and its suppliers and are protected by all applicable intellectual
+* property laws, including trade secret and copyright laws.
+* Dissemination of this information or reproduction of this material
+* is strictly forbidden unless prior written permission is obtained
+* from Adobe.
+
+*************************************************************************
+*/
+<form [formGroup]="migrationToolForm">
+	<div class="flex-container">
+		<div id="document-list-container" *ngIf="true">
+		    <div> 
+				<input placeholder="Template owner" (input) = "_owner = getValue($event)">
+				<button (click)="getDocumentList(_owner)">Filter by template owner</button>
+			</div>
+			<button (click)="getDocumentList('')"> Display templates from the source account </button>
+		    <ng-container formArrayName="documents" *ngFor="let group of documents.controls; let i = index">
+			<div class="document-row" [formGroup]="group">
+		        <input type="checkbox" [checked]="true" formControlName="isSelected" placeholder="true">
+		        <input formControlName="name" placeholder="document name" readonly>
+		    </div>
+		    </ng-container>
+		</div>
+
+		<div id="console" style="flex:3">
+	    	<ng-container formArrayName="consoleMessages" *ngFor="let message of consoleMessages.controls; let i = index">
+	        <p class="console-message" [innerHTML]="message.value"></p>
+	        <!-- Don't do <p class="console-message"> {{message.value}} </p>. This will cause '&nbsp;' that 
+	        is pushed to the FormControl associated with this <p> to be HTML-endoded; i.e. a literal
+	        &nbsp; will be represented, not an actual non-breaking space. -->
+	    	</ng-container>
+	    </div>
+
+	    <div style="flex:1"> <!-- This div is just used to occupy horizontal space. --> </div>
+	</div>
+
+	<button type="submit" *ngIf="_readyForDownload" (click) = "migrateSelected()">Migrate selected</button>
+	<button type="submit" *ngIf="_readyForDownload" (click) = "deleteSelected()">Delete selected</button>
+</form>

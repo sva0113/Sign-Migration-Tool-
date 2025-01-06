@@ -1,0 +1,69 @@
+<!--/************************************************************************
+*
+* ADOBE CONFIDENTIAL
+* ___________________
+*
+* Copyright 2023 Adobe
+* All Rights Reserved.
+*
+* NOTICE: All information contained herein is, and remains
+* the property of Adobe and its suppliers, if any. The intellectual
+* and technical concepts contained herein are proprietary to Adobe
+* and its suppliers and are protected by all applicable intellectual
+* property laws, including trade secret and copyright laws.
+* Dissemination of this information or reproduction of this material
+* is strictly forbidden unless prior written permission is obtained
+* from Adobe.
+
+*************************************************************************
+*/-->
+<h1>Log in</h1>
+<div id="input-container" *ngIf="true" style="flex:2">
+  <div *ngIf="!loggedInSourceDestWithNullCheck('source')">
+    <input placeholder="Source client ID" (input) = "_sourceOAuthClientId = getValue($event)">
+    <input placeholder="Source client secret" type = "password" (input) = "_sourceOAuthClientSecret = getValue($event)">
+    <input placeholder="Source Sign account email" (input) = "_sourceLoginEmail = getValue($event)">
+
+    <div class="login-button-group">
+      <label for="source-compliance-level">Source compliance level</label>
+      <select name="sourceComplianceLevel" id="source-compliance-level" (change) = "_sourceComplianceLevel = getValue($event)">
+        <option value = "commercial">Commercial</option>
+        <option value = "gov-stage">Government (stage)</option>
+        <option value = "gov-prod">Government (prod)</option>
+      </select>
+
+      <select name="shard" id="shard" (change) = "_sourceShard = getValue($event)" *ngIf="sourceComplianceLevel === 'commercial'">
+        <option value = "na1">na1</option>
+        <option value = "na2">na2</option>
+        <option value = "na3">na3</option>
+        <option value = "na4">na4</option>
+      </select>
+      <button type="button" (click) = "sourceLogin()" id="source-login-button">Log in (source account)</button>
+    </div>
+  </div>
+
+  <div style="flex:1"></div>
+
+  <div *ngIf="!loggedInSourceDestWithNullCheck('dest')" style="flex:2">
+    <input placeholder="Destination client ID" (input) = "_destOAuthClientId=getValue($event)">
+    <input placeholder="Destination client secret" type = "password" (input) = "_destOAuthClientSecret=getValue($event)">
+    <input placeholder="Destination Sign account email" (input) = "_destLoginEmail = getValue($event)">
+  
+    <div class="login-button-group">
+      <label for="dest-compliance-level">Dest compliance level</label>
+      <select name="destComplianceLevel" id="dest-compliance-level" (change) = "_destComplianceLevel = getValue($event)">
+        <option value = "commercial">Commercial</option>
+        <option value = "gov-stage">Government (stage)</option>
+        <option value = "gov-prod">Government (prod)</option>
+      </select>
+
+      <select name="shard" id="shard" (change) = "_destShard = getValue($event)" *ngIf="destComplianceLevel === 'commercial'">
+        <option value = "na1">na1</option>
+        <option value = "na2">na2</option>
+        <option value = "na3">na3</option>
+        <option value = "na4">na4</option>
+      </select>
+      <button type="button" (click) = "destLogin()" id="dest-login-button">Log in (destination account)</button>
+    </div>
+  </div>
+</div>
